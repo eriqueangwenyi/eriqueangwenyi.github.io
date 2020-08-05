@@ -1,11 +1,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cd /home/ on cd /home/</title>
-    <link>https://example.com/</link>
-    <description>Recent content in cd /home/ on cd /home/</description>
+    <title>Astrah on Astrah</title>
+    <link>https://eriqueangwenyi.github.io/</link>
+    <description>Recent content in Astrah on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <atom:link href="https://example.com/" rel="self" type="application/rss+xml" />
+    <atom:link href="https://eriqueangwenyi.github.io/" rel="self" type="application/rss+xml" />
     
   </channel>
 </rss>
