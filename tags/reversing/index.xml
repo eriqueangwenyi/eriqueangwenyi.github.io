@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reversing on Astrah</title>
+    <link>https://eriqueangwenyi.github.io/tags/reversing/</link>
+    <description>Recent content in Reversing on Astrah</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://eriqueangwenyi.github.io/tags/reversing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Reverse Engineering part 1</title>
+      <link>https://eriqueangwenyi.github.io/2020/re_challenge_one/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/2020/re_challenge_one/</guid>
+      <description>REVERSE ENGINEERING:UPX PACKED EXECUTABLE Attached is a binary called good luck. You are expected to reverse engineer it and capture the flag. Alternatively, the binary can be found at https://www.dropbox.com/s/mq70390yokr2l02/goodluck?dl=0
+I have started by checking what kind of a file it is from the terminal
+There is not much information from that except for the fact that it is a 64bit executable.
+The next is trying to execute it to see its behavior</description>
+    </item>
+    
+  </channel>
+</rss>

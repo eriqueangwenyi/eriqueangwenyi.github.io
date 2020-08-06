@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  
+  
+  
+  
+  
+  
+  
+  <link rel="canonical" href="https://eriqueangwenyi.github.io/2020/re_challenge_one/" />
+  <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Reverse Engineering part 1 | Astrah
+       
+  </title>
+  <meta name="title" content="Reverse Engineering part 1 | Astrah">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Reverse Engineering part 1"/>
+<meta name="twitter:description" content="REVERSE ENGINEERING:UPX PACKED EXECUTABLE Attached is a binary called good luck. You are expected to reverse engineer it and capture the flag. Alternatively, the binary can be found at https://www.dropbox.com/s/mq70390yokr2l02/goodluck?dl=0
+I have started by checking what kind of a file it is from the terminal
+There is not much information from that except for the fact that it is a 64bit executable.
+The next is trying to execute it to see its behavior"/>
+
+  <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Reverse Engineering part 1",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https:\/\/eriqueangwenyi.github.io\/2020\/re_challenge_one\/"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https:\/\/eriqueangwenyi.github.io\/cover.png",
+    "width":  800 ,
+    "height":  600 
+  },
+  "genre": "posts",
+  "keywords": "RE, Reversing",
+  "wordcount":  404 ,
+  "url": "https:\/\/eriqueangwenyi.github.io\/2020\/re_challenge_one\/",
+  "datePublished": "2020-08-05T00:00:00\u002b00:00",
+  "dateModified": "2020-08-05T00:00:00\u002b00:00",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Fastbyte01",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https:\/\/eriqueangwenyi.github.io\/logo.png",
+      "width":  127 ,
+      "height":  40 
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "map[name:Astrah]"
+  },
+  "description": ""
+}
+</script>
+</head>
+
+  
+
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="https://eriqueangwenyi.github.io">Astrah</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+                <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;<a href="https://eriqueangwenyi.github.io">Astrah</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp">
+    <header class="post-header">
+        <h1 class="post-title">Reverse Engineering part 1</h1>
+        <div class="post-meta">
+            Written by <a href="https://eriqueangwenyi.github.io" rel="author">map[name:Astrah]</a> with ♥ 
+                <span class="post-time">
+                    on <time datetime=2020-08-05 >5 August 2020</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://eriqueangwenyi.github.io/categories/reversing/"> Reversing </a>
+                        <a href="https://eriqueangwenyi.github.io/categories/ctf/"> Ctf </a>
+                        <a href="https://eriqueangwenyi.github.io/categories/hackthebox/"> Hackthebox </a>
+                        
+                </span>
+                <i class="iconfont icon-timer"></i>
+                2 min
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+            
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <h1 id="reverse-engineeringupx-packed-executable">REVERSE ENGINEERING:UPX PACKED EXECUTABLE</h1>
+<p>Attached is a binary called good luck. You are expected to reverse engineer it and capture the flag. Alternatively, the binary can be found at <a href="https://www.dropbox.com/s/mq70390yokr2l02/goodluck?dl=0">https://www.dropbox.com/s/mq70390yokr2l02/goodluck?dl=0</a></p>
+<p>I have started by checking what kind of a file it is from the terminal</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.1.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>There is not much information from that except for the fact that it is a 64bit executable.</p>
+<p>The next is trying to execute it to see its behavior</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.2.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>screenshot above, shows malloc and strcpy,,malloc is used to allocate memory addresses and returns a pointer to it(mostly vulnerable to heap overflow), strcpy copies string pointed from the source to destination address.</p>
+<p>So i went ahead and used strings command which makes it possible to view the human-readable characters within a file, this will help me find any hints of a flag before using a dissasembler.
+I have attached just some sections of the screenshot for this because it gave a long list of details.I will capture the main points of interest</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.3.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.4.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>The underlined statement captured my attention.the executable was packed using Upx packer.
+Upx packer compresses and packs executables ,the reason for this is to hinder dissasembly of executables or even hide the intent of the program especially for maware authors.
+<a href="https://tech-zealots.com/reverse-engineering/dissecting-manual-unpacking-of-a-upx-packed-file/">https://tech-zealots.com/reverse-engineering/dissecting-manual-unpacking-of-a-upx-packed-file/</a></p>
+<p>Okaay,,,lets see if i can disassemble the packed executable using gdb&hellip;</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.5.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>i used intel flavor,</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.6.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Below you can see that we cant use gdb to disassemble the program cause it is compressed and packed using upx packer a technique used to hinder disassembly.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.7.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>so i searched online on how to unpack upx packed executable . I downloaded upx from their github repo <a href="https://github.com/upx/upx/releases/tag/v3.95">https://github.com/upx/upx/releases/tag/v3.95</a> and unpacked the executable as below.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.8.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>lets now disassemble using gdb ‘ - ’
+NB x64 binaries when disassembled gives rbp,rsp,rdx,rax,rip while x86 binaries gives epb, esp,edx,eax,eip etc&hellip;.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.9.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>lets analyse the function, as underlined,,,there is a comment #0x6c2070<!-- raw HTML omitted --> that looks revealing of the flag,
+The value of the address rip+0x2c0ee5 is loaded or moved into rdx, the square brackets defines the value of the address</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.10.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>I put a breakpoint after &lt;+32&gt; so it will on 0x000000000040118b</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.11.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Ran the program and stopped at the breakpoint. I examined the string using x/s,,,,other commands like p/d prints integer or decimal value</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/RE1.12.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>And hurrah the flag is found &ldquo;UPX&hellip;? sounds like a delivery service&rdquo;</p>
+<blockquote>
+<p>Packing executables with upx is not hard to disassemble, the likes of themida and vmprotect are not hard to unpack but visualizing the code is harder.</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Astrah </span>
+                </p>
+            
+           
+            <p class="copyright-item">
+                    <span>Words:</span>
+                   <span>404</span>
+            </p>
+            
+            <p class="copyright-item">
+                
+                <span>Share:</span>
+                <span>
+
+      
+        <a href="//twitter.com/share?url=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fre_challenge_one%2f&amp;text=Reverse%20Engineering%20part%201&amp;via=xxxx" target="_blank" title="Share on Twitter">
+          <i class="iconfont icon-twitter"></i>
+        </a>
+        
+      
+      
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fre_challenge_one%2f" target="_blank" title="Share on Facebook">
+          <i class="iconfont icon-facebook"></i>
+        </a>
+        
+      
+      
+      
+      
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fre_challenge_one%2f&amp;title=Reverse%20Engineering%20part%201" target="_blank" title="Share on LinkedIn">
+          <i class="iconfont icon-linkedin"></i>
+        </a>
+        
+      
+      
+        
+      
+        
+      
+
+          
+
+          
+
+          
+
+          
+</span>
+                
+            </p>
+
+             
+            <p class="copyright-item">
+                Released under <a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-icon-tag"></i>Tag: 
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/re/">
+                    #RE</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/reversing/">
+                    #Reversing</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">Back</a></span> · 
+                <span><a href="https://eriqueangwenyi.github.io">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+         
+        
+    </div>
+
+    <div class="post-comment">
+          
+          <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      (function() {
+          
+          
+          if (window.location.hostname == "localhost")
+              return;
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          var disqus_shortname = 'yourdiscussshortname';
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+ 
+
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2018 - 2020</span>
+        
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://eriqueangwenyi.github.io">Astrah</a> | </span>
+         
+
+		  <span>Crafted with ❤️ by <a href="https://github.com/Fastbyte01/KeepIt" target="_blank" rel="external nofollow noopener noreffer">KeepIt</a> & <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a></span>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <link crossorigin="anonymous" integrity="sha384-yziQACfvCVwLqVFLqkWBYRO3XeA4EqzfXKGwaWnenYn5XzqfJFlFdKEmvutIQdKb" href="https://lib.baomitu.com/lightgallery/1.6.12/css/lightgallery.min.css" rel="stylesheet">
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
+    
+  
+
+
+
+
+
+
+
+     </div>
+  </body>
+</html>

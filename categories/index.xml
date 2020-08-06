@@ -6,9 +6,37 @@
     <description>Recent content in Categories on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://eriqueangwenyi.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ctf</title>
+      <link>https://eriqueangwenyi.github.io/categories/ctf/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/categories/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hackthebox</title>
+      <link>https://eriqueangwenyi.github.io/categories/hackthebox/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/categories/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reversing</title>
+      <link>https://eriqueangwenyi.github.io/categories/reversing/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/categories/reversing/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
