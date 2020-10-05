@@ -6,18 +6,7 @@
     <description>Recent content in Posts on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 05 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Blackfield Exploitation HackTheBox</title>
-      <link>https://eriqueangwenyi.github.io/2020/blackfield/</link>
-      <pubDate>Mon, 05 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://eriqueangwenyi.github.io/2020/blackfield/</guid>
-      <description>Blackfield Exploitation HackTheBox Blackfield is a windows box which was majorly testing on enumeration skills while giving you the taste of real life situations like misconfigurations, that could heavily cost an organisation. The following were the key take aways;
- rpc and smb enumeration Local Security Authority Subsystem Service (LSASS) exploitation Ntds exploitation leveraging on tools like mimikatz and secretdump privilege user accounts exploitation  ENJOY
-Part 1: Initial Enumeration</description>
-    </item>
-    
+    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Reverse Engineering part 1</title>
       <link>https://eriqueangwenyi.github.io/2020/re_challenge_one/</link>

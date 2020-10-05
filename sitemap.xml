@@ -2,20 +2,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
-      <loc>https://eriqueangwenyi.github.io/2020/blackfield/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
       <loc>https://eriqueangwenyi.github.io/2020/re_challenge_one/</loc>
       
       <lastmod>2020-08-05T00:00:00+00:00</lastmod>
@@ -30,37 +16,9 @@
     </url>
   
     <url>
-      <loc>https://eriqueangwenyi.github.io/tags/active-directory/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/tags/ad/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
       <loc>https://eriqueangwenyi.github.io/</loc>
       
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
+      <lastmod>2020-08-05T00:00:00+00:00</lastmod>
       
       
       <changefreq>monthly</changefreq>
@@ -74,77 +32,7 @@
     <url>
       <loc>https://eriqueangwenyi.github.io/categories/</loc>
       
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/tags/hackthebox/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/posts/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/tags/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/tags/windows/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
-      
-      
-      <changefreq>monthly</changefreq>
-      
-      
-      <priority>0.5</priority>
-      
-      
-    </url>
-  
-    <url>
-      <loc>https://eriqueangwenyi.github.io/categories/windows/</loc>
-      
-      <lastmod>2020-10-05T00:00:00+00:00</lastmod>
+      <lastmod>2020-08-05T00:00:00+00:00</lastmod>
       
       
       <changefreq>monthly</changefreq>
@@ -157,6 +45,20 @@
   
     <url>
       <loc>https://eriqueangwenyi.github.io/tags/ctf/</loc>
+      
+      <lastmod>2020-08-05T00:00:00+00:00</lastmod>
+      
+      
+      <changefreq>monthly</changefreq>
+      
+      
+      <priority>0.5</priority>
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://eriqueangwenyi.github.io/posts/</loc>
       
       <lastmod>2020-08-05T00:00:00+00:00</lastmod>
       
@@ -199,6 +101,20 @@
   
     <url>
       <loc>https://eriqueangwenyi.github.io/categories/reversing/</loc>
+      
+      <lastmod>2020-08-05T00:00:00+00:00</lastmod>
+      
+      
+      <changefreq>monthly</changefreq>
+      
+      
+      <priority>0.5</priority>
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://eriqueangwenyi.github.io/tags/</loc>
       
       <lastmod>2020-08-05T00:00:00+00:00</lastmod>
       
