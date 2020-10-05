@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Reversing on Astrah</title>
-    <link>https://eriqueangwenyi.github.io/tags/reversing/</link>
-    <description>Recent content in Reversing on Astrah</description>
+    <title>Ctf on Astrah</title>
+    <link>https://eriqueangwenyi.github.io/tags/ctf/</link>
+    <description>Recent content in Ctf on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/tags/reversing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Reverse Engineering part 1</title>
       <link>https://eriqueangwenyi.github.io/2020/re_challenge_one/</link>

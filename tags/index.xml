@@ -6,10 +6,51 @@
     <description>Recent content in Tags on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 05 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Active Directory</title>
+      <link>https://eriqueangwenyi.github.io/tags/active-directory/</link>
+      <pubDate>Mon, 05 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/tags/active-directory/</guid>
+      <description></description>
+    </item>
     
-	<atom:link href="https://eriqueangwenyi.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AD</title>
+      <link>https://eriqueangwenyi.github.io/tags/ad/</link>
+      <pubDate>Mon, 05 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/tags/ad/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>HackTheBox</title>
+      <link>https://eriqueangwenyi.github.io/tags/hackthebox/</link>
+      <pubDate>Mon, 05 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/tags/hackthebox/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows</title>
+      <link>https://eriqueangwenyi.github.io/tags/windows/</link>
+      <pubDate>Mon, 05 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/tags/windows/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ctf</title>
+      <link>https://eriqueangwenyi.github.io/tags/ctf/</link>
+      <pubDate>Wed, 05 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/tags/ctf/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>RE</title>

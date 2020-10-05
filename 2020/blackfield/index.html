@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  
+  
+  
+  
+  
+  <link rel="prev" href="https://eriqueangwenyi.github.io/2020/re_challenge_one/" />
+  
+  <link rel="canonical" href="https://eriqueangwenyi.github.io/2020/blackfield/" />
+  <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Blackfield Exploitation HackTheBox | Astrah
+       
+  </title>
+  <meta name="title" content="Blackfield Exploitation HackTheBox | Astrah">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Blackfield Exploitation HackTheBox"/>
+<meta name="twitter:description" content="Blackfield Exploitation HackTheBox Blackfield is a windows box which was majorly testing on enumeration skills while giving you the taste of real life situations like misconfigurations, that could heavily cost an organisation. The following were the key take aways;
+ rpc and smb enumeration Local Security Authority Subsystem Service (LSASS) exploitation Ntds exploitation leveraging on tools like mimikatz and secretdump privilege user accounts exploitation  ENJOY
+Part 1: Initial Enumeration"/>
+
+  <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Blackfield Exploitation HackTheBox",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https:\/\/eriqueangwenyi.github.io\/2020\/blackfield\/"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https:\/\/eriqueangwenyi.github.io\/cover.png",
+    "width":  800 ,
+    "height":  600 
+  },
+  "genre": "posts",
+  "keywords": "Windows, AD, HackTheBox, Active Directory",
+  "wordcount":  1045 ,
+  "url": "https:\/\/eriqueangwenyi.github.io\/2020\/blackfield\/",
+  "datePublished": "2020-10-05T00:00:00\u002b00:00",
+  "dateModified": "2020-10-05T00:00:00\u002b00:00",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Fastbyte01",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https:\/\/eriqueangwenyi.github.io\/logo.png",
+      "width":  127 ,
+      "height":  40 
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "map[name:Astrah]"
+  },
+  "description": ""
+}
+</script>
+</head>
+
+  
+
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="https://eriqueangwenyi.github.io">Astrah</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+                <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;<a href="https://eriqueangwenyi.github.io">Astrah</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp">
+    <header class="post-header">
+        <h1 class="post-title">Blackfield Exploitation HackTheBox</h1>
+        <div class="post-meta">
+            Written by <a href="https://eriqueangwenyi.github.io" rel="author">map[name:Astrah]</a> with ♥ 
+                <span class="post-time">
+                    on <time datetime=2020-10-05 >5 October 2020</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://eriqueangwenyi.github.io/categories/windows/"> Windows </a>
+                        
+                </span>
+                <i class="iconfont icon-timer"></i>
+                5 min
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+            
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <h1 id="blackfield-exploitation-hackthebox">Blackfield Exploitation HackTheBox</h1>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black1.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Blackfield is a windows box which was majorly testing on enumeration skills while giving you the taste of real life situations like misconfigurations, that could heavily cost an organisation.
+The following were the key take aways;</p>
+<ol>
+<li>rpc and smb enumeration</li>
+<li>Local Security Authority Subsystem Service (LSASS) exploitation</li>
+<li>Ntds exploitation</li>
+<li>leveraging on tools like mimikatz and secretdump</li>
+<li>privilege user accounts exploitation</li>
+</ol>
+<p>ENJOY</p>
+<p><strong>Part 1: Initial Enumeration</strong></p>
+<p>(i) nmap<br>
+Several interesting ports are available for further enumeration as observed from the result
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black2.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>(ii) Smb Enumeration on port 445</p>
+<pre><code>smbclient -L //10.10.10.192 -N
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black3.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+The following shares were available, however, only <strong>profiles$</strong> share was accessible</p>
+<pre><code> smbclient //10.10.10.192/profiles$ -N
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black4.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+Some Interesting folders found were discovered here, and they seemed to be named after user accounts
+The next step was copying these names in a text file, then checking the content of the folders using <strong>“recurse”</strong> command.
+Following after with <strong>&ldquo;dir&rdquo;</strong> (to show directories of each user) but all directories were empty
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black5.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+Since now we had a list users, the next step was using  <strong>-&gt;impackets-getnpusers.py</strong>. This is a very useful tool that requests tgt account tickets, but why would the Domain Controller just hand over the TGT? because this script will attempt to list and get TGTs for those users that have the property: <strong>&lsquo;Do not require Kerberos preauthentication&rsquo; set (UF_DONT_REQUIRE_PREAUTH)</strong>.<br>
+Another question is, why would this flag be set for an account if it will expose the account to an attack? after  research the conclusion was  <strong>Legacy Systems</strong>. That’s the only time this flag would be set if these are older systems which are unable to support kerberos authentication to AD.<br>
+For further reading on kerberos preauth, click on the link below
+<a href="http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH">http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH</a>
+So moving on to using the badboy script(getnpusers.py), A tgt ticket was found for user support account</p>
+<pre><code> python3 GetNPUsers.py BLACKFIELD.local/ -usersfile /home/osboxes/boxes/blackfield/user.txt -dc-ip 10.10.10.192
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black6.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black7.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+After getting the hash above, <strong>hash cat</strong> was used to crack it using the command below</p>
+<pre><code> hashcat -a 0 -m 18200 hash.txt /usr/share/wordlists/rockyou.txt
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black8.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>user:support</strong>
+<strong>password:#00^BlackKnight</strong>  <br>
+So using the credentials above, <strong>rdp</strong> to the machine was attempted but it was not possible maybe because the account was not a member of the <strong>remote access group</strong>.<br>
+The next option was using <strong>rpcclient for further enumeration</strong>
+The following article comes in handy <a href="https://bitvijays.github.io/LFF-IPS-P3-Exploitation.html">https://bitvijays.github.io/LFF-IPS-P3-Exploitation.html</a> . The reset password commands were used.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black9.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+The password for users with <strong>AdminCount = 1</strong> (Domain Admins and other higher privileged accounts) was not be able to be changed, however users having alternate admin accounts could easily be the targets
+The number 23 came from <strong>MSDN article USER_INFORMATION_CLASS</strong>.  The SAMPR_USER_INTERNAL4_INFORMATION structure holds all attributes of a user, along with an encrypted password.  <br>
+Lets try changing password of account audit2020 and yes we can</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black10.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>Part 2: Getting Initial Access To the machine</strong><br>
+By accessing the smb share ‘audit’ using the account audit2020 above,  lsass.zip was found.<br>
+But what is <strong>LSASS</strong> - Local Security Authority Subsystem Service (LSASS) is a process in Microsoft Windows operating systems that is responsible for enforcing the security policy on the system. It verifies users logging on to a Windows computer or server, handles password changes, and creates access tokens. so this can be leveraged by an attacker to get passwords of users
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black11.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black12.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+Downloaded the file to my local machine</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black13.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+A useful tool for getting clear passwords from lass memory dump is <strong>mimikatz</strong>.
+Switched to a windows vm ,extracted the zip file then downloaded the mimikatz exe from <a href="https://github.com/gentilkiwi/mimikatz/releases">https://github.com/gentilkiwi/mimikatz/releases</a>
+Running mimikatz opens this terminal on cmd.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black14.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+The following command was run</p>
+<pre><code>sekurlsa::minidump lsass.dmp
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black15.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+then &hellip;</p>
+<pre><code>'sekurlsa::logonPasswords full'
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black16.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+and svc_backup account <strong>hash(9658d1d1dcd9250115e2205d9f48400d)</strong> was found,
+then using evilwinrm, logged in using the above credentials and Voila!we have the user flag.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black17.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure> <br>
+<strong>Part 3: Privilege Escalation</strong><br>
+After getting the user svc_backup, the next thing is enumerating the environment for clues<br>
+Further enum through;<br>
+<strong>a] manually looking around</strong><br>
+A txt file was found on the <strong>C:</strong> directory and in it was a clue,  that the user could backup and restore things.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black18.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>b] whoami /priv</strong><br>
+To verify these claims, whoami /priv was used to check the user&rsquo;s privileges and it was true, the user could actually do backup and restore things.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black19.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure><br>
+<strong>c] tools</strong><br>
+All tools needed were uploaded  <br>
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black20.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>&ndash;&gt;WinPeas</strong><br>
+On running winpeas.exe, the executable disappered. This wasn&rsquo;t so clear why at this point.<br>
+<strong>&ndash;&gt;SharpHound</strong><br>
+On this second tool, the following commands were ran</p>
+<pre><code>Powershell -exec bypass
+ Import-module SharpHound.ps1
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black21.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+as you can see in the above image, sharphound was blocked by the antivirus , this explains the sudden disappearnace of the winpeas.exe as well.<br>
+<strong>&ndash;&gt;Powerup</strong><br>
+On this third tool, the following commands were ran</p>
+<pre><code> Import-Module ./powerup.ps1
+ Invoke-AllChecks
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black22.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+As you can see above, the user can backup and restore things.
+After an online search on attack vectors on these, it led me to the following links;<br>
+<a href="https://hackinparis.com/data/slides/2019/talks/HIP2019-Andrea_Pierini-Whoami_Priv_Show_Me_Your_Privileges_And_I_Will_Lead_You_To_System.pdf">https://hackinparis.com/data/slides/2019/talks/HIP2019-Andrea_Pierini-Whoami_Priv_Show_Me_Your_Privileges_And_I_Will_Lead_You_To_System.pdf</a><br>
+<a href="https://docs.datacore.com/WIK-WebHelp/VSS/DiskShadow_Commands_Example.htm">https://docs.datacore.com/WIK-WebHelp/VSS/DiskShadow_Commands_Example.htm</a><br>
+From the two links above, came up with the following script</p>
+<pre><code>set context persistent nowriters#
+add volume c: alias new1#
+create#
+expose %new1% z:#
+
+</code></pre><p>The script was then uploaded  to the server
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black23.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Then the script was ran using the command below.</p>
+<pre><code>cmd /c diskshadow /s script.txt
+</code></pre>
+<p>The shadow copy was successfully created and exposed as partition ‘Z’
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black24.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black25.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+The next thing was to find ntds and copy it to <em>tmp folder</em>. <strong>Why is ntds file important?</strong> The Ntds. dit  file is a database that stores Active Directory data, including  information about user objects, groups, and group membership. It  includes the password hashes for all users in the domain.<br>
+So first uploading two dlls<br>
+<strong>SeBackupPrivilegeCmdLets.dll</strong><br>
+<strong>SeBackupPrivilegeUtils.dll</strong><br>
+which can be found here <a href="https://github.com/giuliano108/SeBackupPrivilege">https://github.com/giuliano108/SeBackupPrivilege</a>
+then importing them</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black26.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+The reason why we used these two dlls was based on the constant that, <strong>if you want to read/copy data out of a &ldquo;normally forbidden&rdquo; folder, you have to act as a backup software</strong>.
+Using the function below, we simulated a backup software,,however you are required to have the privileges to perform that task</p>
+<pre><code>Copy-FileSeBackupPrivilege z:\windows\ntds\ntds.dit c:\tmp\ntds.dit 
+
+![](/images/black27.png)
+</code></pre>
+<p>After the above was successfully executed, ran the following commands  from the tmp folder, which extracted the <strong>system.hive</strong> and <strong>sam.hive</strong> files from the backed up ntds.dit files</p>
+<pre><code>reg save HKLM\SYSTEM c:\tmp\system.hive
+reg save HKLM\SAM c:\tmp\sam.hive
+</code></pre>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black28.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black29.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>These files were then downloaded
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black30.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>So finaly used <strong>secretsdump.py</strong> from impackets to dump the administrator hash.\ Other tools like <strong>samdump2</strong> gave the incorrect hash</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black31.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>user:administrator</strong><br>
+<strong>password hash:184fb5e5178480be64824d4cd53b99ee</strong><br>
+used the above credentials to login using evilwinrm
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black32.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+and finally the <strong>root flag!</strong> Hurrraaay!!
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black33.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Astrah </span>
+                </p>
+            
+           
+            <p class="copyright-item">
+                    <span>Words:</span>
+                   <span>1045</span>
+            </p>
+            
+            <p class="copyright-item">
+                
+                <span>Share:</span>
+                <span>
+
+      
+        <a href="//twitter.com/share?url=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fblackfield%2f&amp;text=Blackfield%20Exploitation%20HackTheBox&amp;via=xxxx" target="_blank" title="Share on Twitter">
+          <i class="iconfont icon-twitter"></i>
+        </a>
+        
+      
+      
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fblackfield%2f" target="_blank" title="Share on Facebook">
+          <i class="iconfont icon-facebook"></i>
+        </a>
+        
+      
+      
+      
+      
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fblackfield%2f&amp;title=Blackfield%20Exploitation%20HackTheBox" target="_blank" title="Share on LinkedIn">
+          <i class="iconfont icon-linkedin"></i>
+        </a>
+        
+      
+      
+        
+      
+        
+      
+
+          
+
+          
+
+          
+
+          
+</span>
+                
+            </p>
+
+             
+            <p class="copyright-item">
+                Released under <a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-icon-tag"></i>Tag: 
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/windows/">
+                    #Windows</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/ad/">
+                    #AD</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/hackthebox/">
+                    #HackTheBox</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/active-directory/">
+                    #Active Directory</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">Back</a></span> · 
+                <span><a href="https://eriqueangwenyi.github.io">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="https://eriqueangwenyi.github.io/2020/re_challenge_one/" class="prev" rel="prev" title="Reverse Engineering part 1"><i class="iconfont icon-dajiantou"></i>&nbsp;Reverse Engineering part 1</a>
+         
+        
+    </div>
+
+    <div class="post-comment">
+          
+          <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      (function() {
+          
+          
+          if (window.location.hostname == "localhost")
+              return;
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          var disqus_shortname = 'yourdiscussshortname';
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+ 
+
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2018 - 2020</span>
+        
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://eriqueangwenyi.github.io">Astrah</a> | </span>
+         
+
+		  <span>Crafted with ❤️ by <a href="https://github.com/Fastbyte01/KeepIt" target="_blank" rel="external nofollow noopener noreffer">KeepIt</a> & <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a></span>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <link crossorigin="anonymous" integrity="sha384-yziQACfvCVwLqVFLqkWBYRO3XeA4EqzfXKGwaWnenYn5XzqfJFlFdKEmvutIQdKb" href="https://lib.baomitu.com/lightgallery/1.6.12/css/lightgallery.min.css" rel="stylesheet">
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
+    
+  
+
+
+
+
+
+
+
+     </div>
+  </body>
+</html>
