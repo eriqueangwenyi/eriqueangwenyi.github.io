@@ -57,7 +57,7 @@ Part 1: Initial Enumeration"/>
   },
   "genre": "posts",
   "keywords": "Windows, AD, HackTheBox, Active Directory",
-  "wordcount":  1043 ,
+  "wordcount":  1042 ,
   "url": "https:\/\/eriqueangwenyi.github.io\/2020\/blackfield\/",
   "datePublished": "2020-10-05T00:00:00\u002b00:00",
   "dateModified": "2020-10-05T00:00:00\u002b00:00",
@@ -192,7 +192,7 @@ Some Interesting folders found were discovered here, and they seemed to be named
 The next step was copying these names in a text file, then checking the content of the folders using <strong>“recurse”</strong> command.
 Following after with <strong>&ldquo;dir&rdquo;</strong> (to show directories of each user) but all directories were empty
 <figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/black5.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
-Since now we had a list users, the next step was using  <strong>-&gt;impackets-getnpusers.py</strong>. This is a very useful tool that requests tgt account tickets, but why would the Domain Controller just hand over the TGT? because this script will attempt to list and get TGTs for those users that have the property: <strong>&lsquo;Do not require Kerberos preauthentication&rsquo; set (UF_DONT_REQUIRE_PREAUTH)</strong>.<br>
+Since now we had a list users, the next step was using  <strong>-&gt;impackets-getnpusers.py</strong>. This is a very useful tool that requests As-rep tickets, but why would the Domain Controller just hand over the tickets? because this script will attempt to list and get TGTs for those users that have the property: <strong>&lsquo;Do not require Kerberos preauthentication&rsquo; set (UF_DONT_REQUIRE_PREAUTH)</strong>.<br>
 Another question is, why would this flag be set for an account if it will expose the account to an attack? after  research the conclusion was  <strong>Legacy Systems</strong>. That’s the only time this flag would be set if these are older systems which are unable to support kerberos authentication to AD.<br>
 For further reading on kerberos preauth, click on the link below
 <a href="http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH">http://www.selfadsi.org/ads-attributes/user-userAccountControl.htm#UF_DONT_REQUIRE_PREAUTH</a>
@@ -313,7 +313,7 @@ and finally the <strong>root flag!</strong> Hurrraaay!!
            
             <p class="copyright-item">
                     <span>Words:</span>
-                   <span>1043</span>
+                   <span>1042</span>
             </p>
             
             <p class="copyright-item">
