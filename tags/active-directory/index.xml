@@ -6,7 +6,17 @@
     <description>Recent content in Active Directory on Astrah</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 05 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://eriqueangwenyi.github.io/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resolute Exploitation HackTheBox</title>
+      <link>https://eriqueangwenyi.github.io/2020/resolute/</link>
+      <pubDate>Wed, 23 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://eriqueangwenyi.github.io/2020/resolute/</guid>
+      <description>Resolute Summary
+ Running enum4linux gave usernames . Got password for a user marko but turned out to be melanie&amp;rsquo;s. Logged in as melanie using evil-winrm Got user.txt flag Manual enumeration into directories and got some hidden files Got password for user ryan from a file. Switched to ryan User is in the group of dnsadmin Crafting malicious dll file for dll-injection Starting the smb server using impacket smbserver.py Setting up the path for /serverlevelplugindll to my dll Stoping and starting the service dns Got root.</description>
+    </item>
+    
     <item>
       <title>Blackfield Exploitation HackTheBox</title>
       <link>https://eriqueangwenyi.github.io/2020/blackfield/</link>
